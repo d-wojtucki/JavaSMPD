@@ -19,8 +19,8 @@
                         <Insets bottom="10" right="10"/>
                     </padding>
                     <Button text="Okay" prefWidth="90"/>
-                    <Button text="Cancel" prefWidth="90"/>
                     <Button text="Help" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90" onAction="#closeApplication"/>
                 </HBox>
             </bottom>
         </BorderPane>
@@ -74,8 +74,8 @@
                         <Insets bottom="10" right="10"/>
                     </padding>
                     <Button text="Okay" prefWidth="90"/>
-                    <Button text="Cancel" prefWidth="90"/>
                     <Button text="Help" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90" onAction="#closeApplication"/>
                 </HBox>
             </bottom>
         </BorderPane>
@@ -139,8 +139,8 @@
                         <Insets bottom="10" right="10"/>
                     </padding>
                     <Button text="Okay" prefWidth="90"/>
-                    <Button text="Cancel" prefWidth="90"/>
                     <Button text="Help" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90" onAction="#closeApplication"/>
                 </HBox>
             </bottom>
         </BorderPane>

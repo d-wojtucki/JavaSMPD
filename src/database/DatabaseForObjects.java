@@ -1,12 +1,11 @@
 package database;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.Vector;
 import java.util.stream.Stream;
 
@@ -47,16 +46,23 @@ public class DatabaseForObjects {
     }
     public boolean loadToDatabase(String filename){
         //todo funkcja czyszcząca bazę przy ponownym załadowaniu dla ciągłości programu
-        String data = filename;
+        String[] data;
+
         try(Stream<String> stream = Files.lines(Paths.get(filename))){
-            stream.forEach(System.out::println);
-            System.out.println();
+
+            stream.forEach(a ->
+                    a.split("\n")
+
+
+            );
+
         }catch(IOException e){
             e.printStackTrace();
-            System.out.println("Cannot open the file");
+            System.out.println("Cannot read the file");
+            return false;
         }
 
-//        System.out.println(data);
+        //System.out.println(data);
 //        String split [] = data.split(",");
 //        System.out.println(split[0]);
         return true;
