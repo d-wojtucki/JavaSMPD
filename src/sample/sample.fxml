@@ -1,48 +1,148 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<TabPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml" tabMinWidth="100" fx:id="border">
+    <Tab text="Preprocessing" closable="false">
+        <BorderPane>
+            <left>
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="20" left="10"/>
+                </padding>
+                <Button text="Okay" prefWidth="90"/>
+                <Button text="Okay1" prefWidth="90" onAction="#onButtonClicked"/>
+            </VBox>
+            </left>
+            <bottom>
+                <HBox spacing="10" alignment="bottom_right">
+                    <padding>
+                        <Insets bottom="10" right="10"/>
+                    </padding>
+                    <Button text="Okay" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90"/>
+                    <Button text="Help" prefWidth="90"/>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </Tab>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<!--<GridPane fx:controller="sample.Controller"-->
-          <!--xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">-->
-        <!--<Button text="ClickMe" GridPane.rowIndex="0" GridPane.columnIndex="0"/>-->
+    <Tab text="Feature Selection" closable="false">
+        <BorderPane>
+            <center>
+                <HBox>
+                    <VBox spacing="20">
+                        <padding>
+                            <Insets top="20" left="50"/>
+                        </padding>
+                        <Label text="Futures Selection"/>
+                        <ComboBox prefWidth="100">
 
+                        </ComboBox>
+                        <RadioButton text="Fisher"/>
+                        <RadioButton text="SFS"/>
+                    </VBox>
+                    <VBox spacing="20">
+                        <padding>
+                            <Insets top="20" left="50"/>
+                        </padding>
+                        <Button text="Compute" prefWidth="90"/>
+                    </VBox>
+                </HBox>
+            </center>
+            <left>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" left="10"/>
+                    </padding>
+                    <Button text="Open File" prefWidth="90" onAction="#openFile"/>
+                    <Button text="Save File" prefWidth="90" onAction="#onButtonClicked"/>
+                </VBox>
+            </left>
+            <right>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" right="10"/>
+                    </padding>
+                    <TextArea prefWidth="250" editable="false">
+                        "This label is in the left position"
+                    </TextArea>
+                </VBox>
+            </right>
+            <bottom>
+                <HBox spacing="10" alignment="bottom_right">
+                    <padding>
+                        <Insets bottom="10" right="10"/>
+                    </padding>
+                    <Button text="Okay" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90"/>
+                    <Button text="Help" prefWidth="90"/>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </Tab>
 
-<!--</GridPane>-->
-<!--<?import javafx.scene.layout.BorderPane?>-->
-<!--<?import javafx.scene.layout.HBox?>-->
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
-<BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
-    <center>
-        <Label text="Futures Selection" />
-    </center>
-    <left>
+    <Tab text="Clasifiers" closable="false">
+        <BorderPane>
+            <center>
+                <HBox>
+                    <VBox spacing="20">
+                        <padding>
+                            <Insets top="20" left="30"/>
+                        </padding>
+                        <Label text="Futures Selection"/>
+                        <ComboBox prefWidth="100">
 
-        <VBox spacing="20" alignment="TOP_LEFT">
-        <padding>
-            <Insets top="40" left="10"/>
-        </padding>
+                        </ComboBox>
+                        <RadioButton text="Fisher"/>
+                        <RadioButton text="SFS"/>
+                    </VBox>
+                    <VBox spacing="20">
+                        <padding>
+                            <Insets top="20" left="30"/>
+                        </padding>
+                        <Button text="Train" prefWidth="90"/>
+                        <TextField>
 
-        <Button text="Okay" prefWidth="90"/>
-        <Button text="Okay1" prefWidth="90" onAction="#onButtonClicked"/>
-        </VBox>
-    </left>
-    <right>
-        <Label text="This label is in the left position"/>
-    </right>
-    <bottom>
-        <HBox spacing="10" alignment="bottom_right">
-            <padding>
-                <Insets bottom="10" right="10"/>
-            </padding>
-            <Button text="Okay" prefWidth="90"/>
-            <Button text="Cancel" prefWidth="90"/>
-            <Button text="Help" prefWidth="90"/>
-        </HBox>
-    </bottom>
+                        </TextField>
+                    </VBox>
+                    <VBox spacing="20">
+                        <padding>
+                            <Insets top="20" left="30"/>
+                        </padding>
+                        <Button text="Execute" prefWidth="90"/>
+                    </VBox>
+                </HBox>
+            </center>
+            <left>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" left="10"/>
+                    </padding>
 
-</BorderPane>
+                    <Button text="Open File" prefWidth="90"/>
+                    <Button text="Save File" prefWidth="90" onAction="#onButtonClicked"/>
+                </VBox>
+            </left>
+            <right>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" right="10"/>
+                    </padding>
+                    <TextArea prefWidth="200" editable="false">
+                        "This label is in the left position"
+                    </TextArea>
+                </VBox>
+            </right>
+            <bottom>
+                <HBox spacing="10" alignment="bottom_right">
+                    <padding>
+                        <Insets bottom="10" right="10"/>
+                    </padding>
+                    <Button text="Okay" prefWidth="90"/>
+                    <Button text="Cancel" prefWidth="90"/>
+                    <Button text="Help" prefWidth="90"/>
+                </HBox>
+            </bottom>
+        </BorderPane>
+    </Tab>
+</TabPane>
