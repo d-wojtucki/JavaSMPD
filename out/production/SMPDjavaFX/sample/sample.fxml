@@ -55,7 +55,7 @@
                         <Insets top="20" left="10"/>
                     </padding>
                     <Button text="Open File" prefWidth="90" onAction="#openFile"/>
-                    <Button text="Save File" prefWidth="90" onAction="#onButtonClicked"/>
+                    <Button text="Show Data" prefWidth="90" onAction="#printText"/>
                 </VBox>
             </left>
             <right>
@@ -63,8 +63,8 @@
                     <padding>
                         <Insets top="20" right="10"/>
                     </padding>
-                    <TextArea prefWidth="250" editable="false">
-                        "This label is in the left position"
+                    <TextArea fx:id="textArea" prefWidth="300" editable="false">
+
                     </TextArea>
                 </VBox>
             </right>
