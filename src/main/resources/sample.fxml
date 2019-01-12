@@ -34,7 +34,7 @@
                         <padding>
                             <Insets top="20" left="50"/>
                         </padding>
-                        <Label text="Futures Selection"/>
+                        <Label text="Features Selection"/>
                         <ComboBox prefWidth="100">
 
                         </ComboBox>
