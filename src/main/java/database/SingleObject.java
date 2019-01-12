@@ -5,9 +5,9 @@ import java.util.List;
 public class SingleObject {
     private int classId;
     private String className;
-    private List<Float> features;
+    private List<Double> features;
 
-    public SingleObject(String className, List<Float> features) {
+    public SingleObject(String className, List<Double> features) {
         this.className = className;
         this.features = features;
     }
@@ -24,7 +24,7 @@ public class SingleObject {
         return features.size();
     }
 
-    public List<Float> getFeatures() {
+    public List<Double> getFeatures() {
         return features;
     }
 

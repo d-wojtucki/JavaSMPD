@@ -1,5 +1,7 @@
 package database;
 
+import sample.Calculations;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,11 +10,11 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DatabaseForObjects {
-    private List<SingleObject> singleObjects;
+    private ArrayList<SingleObject> singleObjects;
     private Map<String, Integer> classCounters;
     private List<String> classNameList;
     private List<Integer> featuresIDs;
-    private List<List<Float>> featuresList;
+    private List<List<Double>> featuresList;
 
     private int noClass;
     private int noObjects;
@@ -60,13 +62,15 @@ public class DatabaseForObjects {
             classNameList.add(data[i]);
             test[i] = test[i].substring(test[i].indexOf(",") + 1);
         }
-        convertStringArrayToFloatList(test);
+        convertStringArrayToDoubleList(test);
         for (int j = 0; j < featuresList.size(); j++) {
             System.out.println(featuresList.get(j).size() + " " + featuresList.size());
             singleObjects.add(new SingleObject(classNameList.get(j), featuresList.get(j)));
         }
         System.out.println(singleObjects.get(1).toString());
         System.out.println(classNameList.size());
+
+        Calculations.instantiateObjectClasses(singleObjects);
         return true;
     }
 
@@ -75,10 +79,10 @@ public class DatabaseForObjects {
         featuresIDs = Arrays.stream(features.split(",")).map(Integer::parseInt).collect(Collectors.toList());
     }
 
-    public void convertStringArrayToFloatList(String[] tab) {
+    public void convertStringArrayToDoubleList(String[] tab) {
         for (int i = 1; i < tab.length; i++) {
-            List<Float> floatList = Arrays.stream(tab[i].split(",")).map(Float::parseFloat).collect(Collectors.toList());
-            featuresList.add(floatList);
+            List<Double> doubleList = Arrays.stream(tab[i].split(",")).map(Double::parseDouble).collect(Collectors.toList());
+            featuresList.add(doubleList);
         }
     }
 

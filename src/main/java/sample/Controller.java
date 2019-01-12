@@ -54,4 +54,15 @@ public class Controller {
                 "first object created " + base.getSingleObjects().get(1).toString() + "\n" +
                 "second object created " + base.getSingleObjects().get(70).toString());
     }
+
+    public void computeFisher() {
+        int featureCount = 3;
+        System.out.println("Calculating, please wait...");
+        Calculations.calculateFisher(featureCount);
+        printFisherResults(featureCount);
+    }
+
+    public void printFisherResults(int featureCount) {
+        textArea.setText(Calculations.FisherResult.getFisherResults(featureCount));
+    }
 }
