@@ -38,7 +38,7 @@
                         <ComboBox prefWidth="100">
 
                         </ComboBox>
-                        <RadioButton text="Fisher"/>
+                        <RadioButton text="Fisher" selected="true"/>
                         <RadioButton text="SFS"/>
                     </VBox>
                     <VBox spacing="20">

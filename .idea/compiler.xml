@@ -20,7 +20,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="SMPDjavaFX" target="1.8" />
+      <module name="SMPDjavaFX" target="10" />
     </bytecodeTargetLevel>
   </component>
 </project>

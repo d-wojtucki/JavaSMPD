@@ -5,10 +5,7 @@ import database.SingleObject;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -40,6 +37,8 @@ public class Controller {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public void selectRadioButton(){
 
     }
 
@@ -60,7 +59,7 @@ public class Controller {
     }
 
     public void computeFisher() {
-        int featureCount = 5;
+        int featureCount = 2;
         System.out.println("Calculating, please wait...");
         Calculations.calculateFisher(featureCount);
         printFisherResults(featureCount);
