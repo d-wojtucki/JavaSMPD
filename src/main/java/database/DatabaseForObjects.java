@@ -31,21 +31,6 @@ public class DatabaseForObjects {
         this.featuresList = new ArrayList<>();
     }
 
-    public boolean addObject(SingleObject object) {
-        if (noFeatures == 0) {
-            noFeatures = object.getFeaturesNumber();
-        } else if (noFeatures != object.getFeaturesNumber()) {
-            return false;
-        }
-        singleObjects.add(object);
-        noObjects++;
-        //todo możliwie usunąć
-        if (!classCounters.containsKey(object.getClassName())) {
-            classNameList.add(object.getClassName());
-        }
-        return true;
-    }
-
     public boolean loadToDatabase(String filename) throws IOException {
         //todo funkcja czyszcząca bazę przy ponownym załadowaniu dla ciągłości programu
         Stream<String> stream = Files.lines(Paths.get(filename));
@@ -87,7 +72,7 @@ public class DatabaseForObjects {
     }
 
     public List<SingleObject> getSingleObjects() {
-        return singleObjects;
+            return singleObjects;
     }
 
     public Map<String, Integer> getClassCounters() {

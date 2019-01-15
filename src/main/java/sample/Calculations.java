@@ -6,6 +6,7 @@ import database.SingleObject;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,9 +47,17 @@ public class Calculations {
             double tempFisher = calculateFisher(next, acer, quercus);
             if (tempFisher > fisherValue) {
                 FisherResult.indexes = next;
+                Arrays.asList(FisherResult.indexes).forEach(System.out::println);
                 FisherResult.value = tempFisher;
                 fisherValue = tempFisher;
             }
+        }
+    }
+
+    public static void calculateSFS(int featureCount){
+        calculateFisher(1);
+        for(int i = 2; i <= featureCount; i++){
+            calculateFisher(i);
         }
     }
 
@@ -116,6 +125,10 @@ public class Calculations {
             }
             resultPrintout+="Value: " + value;
             return resultPrintout;
+        }
+
+        public static int[] getValues(){
+            return indexes;
         }
     }
 }

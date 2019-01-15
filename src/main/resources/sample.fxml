@@ -10,7 +10,7 @@
                     <Insets top="20" left="10"/>
                 </padding>
                 <Button text="Okay" prefWidth="90"/>
-                <Button text="Okay1" prefWidth="90" onAction="#onButtonClicked"/>
+                <Button text="Okay1" prefWidth="90"/>
             </VBox>
             </left>
             <bottom>
@@ -35,17 +35,17 @@
                             <Insets top="20" left="50"/>
                         </padding>
                         <Label text="Features Selection"/>
-                        <ComboBox prefWidth="100">
+                        <ComboBox prefWidth="100" fx:id="comboBox" onAction="#setFeatureCount">
 
                         </ComboBox>
-                        <RadioButton text="Fisher" selected="true"/>
-                        <RadioButton text="SFS"/>
+                        <RadioButton text="Fisher" fx:id="fisher" onAction="#selectFisher"/>
+                        <RadioButton text="SFS" fx:id="sfs" onAction="#selectSfs"/>
                     </VBox>
                     <VBox spacing="20">
                         <padding>
                             <Insets top="20" left="50"/>
                         </padding>
-                        <Button text="Compute" prefWidth="90" onAction="#computeFisher"/>
+                        <Button text="Compute" prefWidth="90" onAction="#compute"/>
                     </VBox>
                 </HBox>
             </center>
@@ -120,7 +120,7 @@
                     </padding>
 
                     <Button text="Open File" prefWidth="90"/>
-                    <Button text="Save File" prefWidth="90" onAction="#onButtonClicked"/>
+                    <Button text="Save File" prefWidth="90"/>
                 </VBox>
             </left>
             <right>
