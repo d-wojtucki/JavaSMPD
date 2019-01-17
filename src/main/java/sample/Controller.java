@@ -14,11 +14,10 @@ import java.io.IOException;
 
 public class Controller {
 
-    private DatabaseForObjects base = new DatabaseForObjects();
-    private int featureCount = 0;
-
     @FXML
     public TextArea textArea;
+    private DatabaseForObjects base = new DatabaseForObjects();
+    private int featureCount = 0;
     @FXML
     private Node border;
     @FXML
@@ -41,46 +40,50 @@ public class Controller {
         fillComboBox();
     }
 
-    public void selectSfs(){
+    public void selectSfs() {
         sfs.setSelected(true);
         fisher.setSelected(false);
     }
 
-    public void selectFisher(){
+    public void selectFisher() {
         fisher.setSelected(true);
         sfs.setSelected(false);
     }
 
-    public void compute(){
-        if(fisher.isSelected()){
+    public void compute() {
+        if (fisher.isSelected()) {
             computeFisher();
-        }else if(sfs.isSelected()){
+        } else if (sfs.isSelected()) {
             computeSfs();
         }
     }
 
-    public void computeSfs(){
+    public void computeSfs() {
         Calculations.calculateSFS(featureCount);
-        printFisherResults(featureCount);
+        printSFSResults(featureCount);
     }
 
     public void computeFisher() {
         setFeatureCount();
-        System.out.println("Calculating for " + featureCount +  " features, please wait...");
+        System.out.println("Calculating for " + featureCount + " features, please wait...");
         Calculations.calculateFisher(featureCount);
         printFisherResults(featureCount);
     }
 
-    public void fillComboBox(){
+    public void fillComboBox() {
         comboBox.getItems().addAll(base.getFeautersIDs());
     }
 
-    public void setFeatureCount(){
-         featureCount = comboBox.getSelectionModel().getSelectedItem();
+    public void setFeatureCount() {
+        featureCount = comboBox.getSelectionModel().getSelectedItem();
     }
 
     public void printFisherResults(int featureCount) {
         textArea.setText(Calculations.FisherResult.getFisherResults(featureCount));
+    }
+
+    public void printSFSResults(int featureCount) {
+        textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
     }
 
     public void closeApplication() {
