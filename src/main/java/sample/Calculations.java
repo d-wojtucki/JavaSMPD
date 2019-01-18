@@ -14,6 +14,10 @@ public class Calculations {
     public static ObjectClass acerObjectClass;
     public static ObjectClass quercusObjectClass;
     public static Map<Integer, Double> resultsMap = new HashMap<>();
+    public static Map<int[], Double> SFSResultMap = new HashMap<>();
+
+//    public static int[] sfsIndexes;
+//    public static double sfsValue;
 
     public static void instantiateObjectClasses(ArrayList<SingleObject> listOfAllObjects) {
         acerObjectClass = new ObjectClass("Acer");
@@ -35,7 +39,7 @@ public class Calculations {
 
     public static void calculateFisher(int featureCount) {
         calculateFisher(featureCount, acerObjectClass, quercusObjectClass);
-        System.out.println(FisherResult.getFisherResults(featureCount));
+        //System.out.println(FisherResult.getFisherResults(featureCount));
     }
 
     public static void calculateFisher(int featureCount, ObjectClass acer, ObjectClass quercus) {
@@ -55,6 +59,42 @@ public class Calculations {
         }
     }
 
+    public static void calculateSFSV2(int featuresCount) {
+        calculateFisher(1);
+        for(int g = 2; g < featuresCount; g++){
+            calculateSFSV2(g);
+        }
+
+        if(featuresCount > 1){
+            int[] next;
+
+            if(featuresCount > 2){
+                next = SFSResult.sfsFeature;
+            }else{
+                next = FisherResult.indexes;
+            }
+            int[] tab = new int[next.length +1];
+            double fisherTemp;
+            int[] tempIndexes;
+            double tempSFS = SFSResult.value;
+
+            for (int i = 0; i < next.length; i++) {
+                tab[i] = next[i];
+            }
+            for(int j = 0; j < acerObjectClass.getAverageMatrix().getRowDimension(); j++){
+                tab[featuresCount - 1] = j;
+                fisherTemp = calculateFisher(tab,acerObjectClass,quercusObjectClass);
+                if(fisherTemp > tempSFS){
+                    tempIndexes = tab;
+                    tempSFS = fisherTemp;
+                    //SFSResultMap.put(tab,fisherTemp);
+                    SFSResult.value = tempSFS;
+                    SFSResult.sfsFeature = tempIndexes;
+                }
+            }
+        }
+    }
+
     public static void calculateSFS(int featureCount) {
         Iterator<int[]> iterator = CombinatoricsUtils.combinationsIterator(acerObjectClass.getAverageMatrix().getRowDimension(),
                 featureCount);
@@ -67,7 +107,7 @@ public class Calculations {
                 temp = resultsMap.get(next[i]);
                 if (fisherValue < temp) {
                     SFSResult.value = temp;
-                    SFSResult.sfsFeature = next[i];
+                    //SFSResult.sfsFeature = next[i];
                     fisherValue = temp;
                 }
             }
@@ -123,9 +163,8 @@ public class Calculations {
         public static double value;
 
         public FisherResult() {
-
-            indexes[0] = 0;
             value = 0;
+            indexes[0]= 0;
         }
 
         public static String getFisherResults(int featureCount) {
@@ -144,19 +183,20 @@ public class Calculations {
 
     public static class SFSResult {
         public static double value;
-        public static int sfsFeature;
+        public static int[] sfsFeature;
 
         public SFSResult() {
-            value = 0;
-            sfsFeature = 0;
+            value = FisherResult.value;
+            sfsFeature = FisherResult.indexes;
         }
 
         public static String getSfsResult(int featureCount) {
             String resultPrintout = "SFS for " + featureCount + " features\n";
-            resultPrintout += "Feature number: " + value + ",\n";
-            resultPrintout += "Value: " + sfsFeature;
+            for (int i : sfsFeature) {
+                resultPrintout += "Features number: " + i + ",\n";
+            }
+            resultPrintout += "Value: " + value;
             return resultPrintout;
         }
-
     }
 }

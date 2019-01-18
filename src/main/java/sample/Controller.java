@@ -59,7 +59,7 @@ public class Controller {
     }
 
     public void computeSfs() {
-        Calculations.calculateSFS(featureCount);
+        Calculations.calculateSFSV2(featureCount);
         printSFSResults(featureCount);
     }
 
