@@ -11,11 +11,8 @@ public class Calculations {
     public static ObjectClass acerObjectClass;
     public static ObjectClass quercusObjectClass;
     public static Map<Integer, Double> resultsMap = new HashMap<>();
-    public static Map<Integer, SFS> SFSResultMap = new HashMap<>();
-    double fisherTemp = 0;
-
-//    public static int[] sfsIndexes;
-//    public static double sfsValue;
+    public static List<SFS> SFSResultMap = new ArrayList<>();
+    public double fisherTemp = 0;
 
     public static void instantiateObjectClasses(ArrayList<SingleObject> listOfAllObjects) {
         acerObjectClass = new ObjectClass("Acer");
@@ -53,25 +50,6 @@ public class Calculations {
                 FisherResult.indexes = next;
                 FisherResult.value = tempFisher;
                 fisherValue = tempFisher;
-            }
-        }
-    }
-
-    public static void calculateSFS(int featureCount) {
-        Iterator<int[]> iterator = CombinatoricsUtils.combinationsIterator(acerObjectClass.getAverageMatrix().getRowDimension(),
-                featureCount);
-        calculateFisher(1);
-        double temp = 0;
-        double fisherValue = 0;
-        while (iterator.hasNext()) {
-            int[] next = iterator.next();
-            for (int i = 0; i < next.length; i++) {
-                temp = resultsMap.get(next[i]);
-                if (fisherValue < temp) {
-                    SFSResult.value = temp;
-                    //SFSResult.sfsFeature = next[i];
-                    fisherValue = temp;
-                }
             }
         }
     }
@@ -122,6 +100,7 @@ public class Calculations {
 
     public void calculateSFS22(int featuresCount) {
         calculateFisher(1);
+        SFSResultMap.add(new SFS(FisherResult.indexes, FisherResult.value));
         for (int g = 2; g <= featuresCount; g++) {
             calculateSFSV2(g);
         }
@@ -144,20 +123,38 @@ public class Calculations {
                 tab[i] = next[i];
             }
             for (int j = 0; j < acerObjectClass.getAverageMatrix().getRowDimension(); j++) {
-                if (tab[featuresCount - 1] == j) {
+
+                if (checkIfValueIsRedundant(tab, j)) {
                     continue;
                 }
+
                 tab[featuresCount - 1] = j;
-                int[] copyTab = Arrays.copyOf(tab,tab.length);
+                int[] copyTab = Arrays.copyOf(tab, tab.length);
                 fisherTemp = calculateFisher(tab, acerObjectClass, quercusObjectClass);
                 if (fisherTemp > tempSFS) {
-                    SFSResultMap.put(j, new SFS(copyTab, fisherTemp));
+                    SFSResultMap.add(new SFS(copyTab, fisherTemp));
                     tempSFS = fisherTemp;
+                    SFSResult.value = fisherTemp;
                     SFSResult.sfsFeature = copyTab;
                 }
             }
-            fisherTemp = 0;
         }
+    }
+
+    public static void resetAllFields() {
+        FisherResult.resetFields();
+        SFSResult.resetFields();
+        SFS.resetFields();
+
+    }
+
+    public boolean checkIfValueIsRedundant(int[] tab, int j) {
+        for (int a : tab) {
+            if (a == j) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static class FisherResult {
@@ -178,8 +175,9 @@ public class Calculations {
             return resultPrintout;
         }
 
-        public static int[] getValues() {
-            return indexes;
+        public static void resetFields() {
+            value = 0;
+            indexes[0] = 0;
         }
     }
 
@@ -194,17 +192,29 @@ public class Calculations {
 
         public static String getSfsResult(int featureCount) {
             String resultPrintout = "SFS for " + featureCount + " features\n";
-            for (int i : sfsFeature) {
-                resultPrintout += "Features number: " + i + ",\n";
+            if (sfsFeature != null) {
+                for (int i : sfsFeature) {
+                    resultPrintout += "Features number: " + i + ",\n";
+                }
+                resultPrintout += "Value: " + value;
+                return resultPrintout;
+            }else{
+                resultPrintout += "Features number: " + SFSResultMap.get(0).getTab()[0] + ",\n";
+                resultPrintout += "Value: " + SFSResultMap.get(0).getValue();
+
             }
-            resultPrintout += "Value: " + value;
             return resultPrintout;
+        }
+
+        public static void resetFields() {
+            value = 0;
+            sfsFeature = null;
         }
     }
 
-    public class SFS {
-        public int[] tab;
-        public double value;
+    public static class SFS {
+        public static int[] tab;
+        public static double value;
 
         public SFS(int[] tab, double value) {
             this.tab = tab;
@@ -225,6 +235,11 @@ public class Calculations {
 
         public void setValue(double value) {
             this.value = value;
+        }
+
+        public static void resetFields() {
+            tab = null;
+            value = 0;
         }
 
         @Override

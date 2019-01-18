@@ -90,7 +90,7 @@
                             <Insets top="20" left="30"/>
                         </padding>
                         <Label text="Futures Selection"/>
-                        <ComboBox prefWidth="100">
+                        <ComboBox prefWidth="100" fx:id="clasifiersComboBox" onAction="#setClasifierMethod">
 
                         </ComboBox>
                         <RadioButton text="Fisher"/>
@@ -109,7 +109,7 @@
                         <padding>
                             <Insets top="20" left="30"/>
                         </padding>
-                        <Button text="Execute" prefWidth="90"/>
+                        <Button text="Execute" prefWidth="90" onAction="#clasify"/>
                     </VBox>
                 </HBox>
             </center>
@@ -119,7 +119,7 @@
                         <Insets top="20" left="10"/>
                     </padding>
 
-                    <Button text="Open File" prefWidth="90"/>
+                    <Button text="Open File" prefWidth="90" onAction="#openFile"/>
                     <Button text="Save File" prefWidth="90"/>
                 </VBox>
             </left>
@@ -128,8 +128,8 @@
                     <padding>
                         <Insets top="20" right="10"/>
                     </padding>
-                    <TextArea prefWidth="200" editable="false">
-                        "This label is in the left position"
+                    <TextArea prefWidth="200" fx:id="textArea2" editable="false">
+
                     </TextArea>
                 </VBox>
             </right>

@@ -49,11 +49,9 @@ public class DatabaseForObjects {
         }
         convertStringArrayToDoubleList(test);
         for (int j = 0; j < featuresList.size(); j++) {
-            System.out.println(featuresList.get(j).size() + " " + featuresList.size());
             singleObjects.add(new SingleObject(classNameList.get(j), featuresList.get(j)));
         }
-        System.out.println(singleObjects.get(1).toString());
-        System.out.println(classNameList.size());
+
 
         Calculations.instantiateObjectClasses(singleObjects);
         return true;
@@ -62,6 +60,7 @@ public class DatabaseForObjects {
     public void parseFistFileLineToGetFeaturesID(String[] data) {
         String features = data[0].substring(3).replaceAll(" ", "");
         featuresIDs = Arrays.stream(features.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+        featuresIDs.remove(0);
     }
 
     public void convertStringArrayToDoubleList(String[] tab) {

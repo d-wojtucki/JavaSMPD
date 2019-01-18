@@ -1,6 +1,5 @@
 package sample;
 
-public class SFS {
+import java.util.Arrays;
 
 
-}
