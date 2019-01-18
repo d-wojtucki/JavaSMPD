@@ -19,8 +19,11 @@ public class Controller {
 
     @FXML
     public TextArea textArea;
+    @FXML
+    public TextArea textArea2;
     private DatabaseForObjects base = new DatabaseForObjects();
     private int featureCount = 0;
+    private String clasifierMethod;
     @FXML
     private Node border;
     @FXML
@@ -29,6 +32,8 @@ public class Controller {
     private RadioButton sfs;
     @FXML
     private ComboBox<Integer> comboBox;
+    @FXML
+    private ComboBox<String> clasifiersComboBox;
 
     public void openFile() {
         FileChooser fileChooser = new FileChooser();
@@ -41,6 +46,8 @@ public class Controller {
             e.printStackTrace();
         }
         fillComboBox();
+        Clasifiers.fillClassifiersList();
+        fillClasifiersComboBox();
     }
 
     public void selectSfs() {
@@ -58,6 +65,16 @@ public class Controller {
             computeFisher();
         } else if (sfs.isSelected()) {
             computeSfs();
+        }
+    }
+    //todo wypełnij napisanymi metodami
+    public void clasify(){
+        if(clasifierMethod == "NN"){
+
+        }else if(clasifierMethod == "k-NN"){
+
+        }else if(clasifierMethod == "NM"){
+
         }
     }
 
@@ -78,6 +95,14 @@ public class Controller {
         comboBox.getItems().addAll(base.getFeautersIDs());
     }
 
+    public void fillClasifiersComboBox() {
+        clasifiersComboBox.getItems().addAll(Clasifiers.getClasifiersList());
+    }
+
+    public void setClasifierMethod() {
+        clasifierMethod = clasifiersComboBox.getSelectionModel().getSelectedItem();
+    }
+
     public void setFeatureCount() {
         featureCount = comboBox.getSelectionModel().getSelectedItem();
     }
@@ -88,10 +113,12 @@ public class Controller {
 
     public void printSFSResults(int featureCount) {
         //textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
-        for(Map.Entry<Integer, Calculations.SFS> entry: SFSResultMap.entrySet()){
-            System.out.println(entry.getKey() + "//" + entry.getValue().toString());
+        for (Calculations.SFS a : SFSResultMap) {
+            System.out.println(a.toString());
         }
+        textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
         SFSResultMap.clear();
+        Calculations.resetAllFields();
     }
 
     public void closeApplication() {
