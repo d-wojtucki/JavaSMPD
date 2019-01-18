@@ -5,16 +5,14 @@ import database.ObjectClass;
 import database.SingleObject;
 import org.apache.commons.math3.util.CombinatoricsUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class Calculations {
     public static ObjectClass acerObjectClass;
     public static ObjectClass quercusObjectClass;
     public static Map<Integer, Double> resultsMap = new HashMap<>();
-    public static Map<int[], Double> SFSResultMap = new HashMap<>();
+    public static Map<Integer, SFS> SFSResultMap = new HashMap<>();
+    double fisherTemp = 0;
 
 //    public static int[] sfsIndexes;
 //    public static double sfsValue;
@@ -55,42 +53,6 @@ public class Calculations {
                 FisherResult.indexes = next;
                 FisherResult.value = tempFisher;
                 fisherValue = tempFisher;
-            }
-        }
-    }
-
-    public static void calculateSFSV2(int featuresCount) {
-        calculateFisher(1);
-        for(int g = 2; g < featuresCount; g++){
-            calculateSFSV2(g);
-        }
-
-        if(featuresCount > 1){
-            int[] next;
-
-            if(featuresCount > 2){
-                next = SFSResult.sfsFeature;
-            }else{
-                next = FisherResult.indexes;
-            }
-            int[] tab = new int[next.length +1];
-            double fisherTemp;
-            int[] tempIndexes;
-            double tempSFS = SFSResult.value;
-
-            for (int i = 0; i < next.length; i++) {
-                tab[i] = next[i];
-            }
-            for(int j = 0; j < acerObjectClass.getAverageMatrix().getRowDimension(); j++){
-                tab[featuresCount - 1] = j;
-                fisherTemp = calculateFisher(tab,acerObjectClass,quercusObjectClass);
-                if(fisherTemp > tempSFS){
-                    tempIndexes = tab;
-                    tempSFS = fisherTemp;
-                    //SFSResultMap.put(tab,fisherTemp);
-                    SFSResult.value = tempSFS;
-                    SFSResult.sfsFeature = tempIndexes;
-                }
             }
         }
     }
@@ -158,13 +120,53 @@ public class Calculations {
         return matrix;
     }
 
+    public void calculateSFS22(int featuresCount) {
+        calculateFisher(1);
+        for (int g = 2; g <= featuresCount; g++) {
+            calculateSFSV2(g);
+        }
+    }
+
+    public void calculateSFSV2(int featuresCount) {
+
+        if (featuresCount > 1) {
+            int[] next;
+            if (featuresCount > 2) {
+                next = Arrays.copyOf(SFSResult.sfsFeature, SFSResult.sfsFeature.length);
+            } else {
+                next = Arrays.copyOf(FisherResult.indexes, FisherResult.indexes.length);
+            }
+            int[] tab = new int[next.length + 1];
+
+            double tempSFS = SFSResult.value;
+
+            for (int i = 0; i < next.length; i++) {
+                tab[i] = next[i];
+            }
+            for (int j = 0; j < acerObjectClass.getAverageMatrix().getRowDimension(); j++) {
+                if (tab[featuresCount - 1] == j) {
+                    continue;
+                }
+                tab[featuresCount - 1] = j;
+                int[] copyTab = Arrays.copyOf(tab,tab.length);
+                fisherTemp = calculateFisher(tab, acerObjectClass, quercusObjectClass);
+                if (fisherTemp > tempSFS) {
+                    SFSResultMap.put(j, new SFS(copyTab, fisherTemp));
+                    tempSFS = fisherTemp;
+                    SFSResult.sfsFeature = copyTab;
+                }
+            }
+            fisherTemp = 0;
+        }
+    }
+
     public static class FisherResult {
         public static int[] indexes;
         public static double value;
 
         public FisherResult() {
             value = 0;
-            indexes[0]= 0;
+            indexes[0] = 0;
         }
 
         public static String getFisherResults(int featureCount) {
@@ -197,6 +199,40 @@ public class Calculations {
             }
             resultPrintout += "Value: " + value;
             return resultPrintout;
+        }
+    }
+
+    public class SFS {
+        public int[] tab;
+        public double value;
+
+        public SFS(int[] tab, double value) {
+            this.tab = tab;
+            this.value = value;
+        }
+
+        public int[] getTab() {
+            return tab;
+        }
+
+        public void setTab(int[] tab) {
+            this.tab = tab;
+        }
+
+        public double getValue() {
+            return value;
+        }
+
+        public void setValue(double value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return "SFS{" +
+                    "tab=" + Arrays.toString(tab) +
+                    ", value=" + value +
+                    '}';
         }
     }
 }

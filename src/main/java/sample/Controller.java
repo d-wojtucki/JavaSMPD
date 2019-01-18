@@ -11,6 +11,9 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+
+import static sample.Calculations.SFSResultMap;
 
 public class Controller {
 
@@ -59,7 +62,8 @@ public class Controller {
     }
 
     public void computeSfs() {
-        Calculations.calculateSFSV2(featureCount);
+        Calculations cal = new Calculations();
+        cal.calculateSFS22(featureCount);
         printSFSResults(featureCount);
     }
 
@@ -83,7 +87,11 @@ public class Controller {
     }
 
     public void printSFSResults(int featureCount) {
-        textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
+        //textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
+        for(Map.Entry<Integer, Calculations.SFS> entry: SFSResultMap.entrySet()){
+            System.out.println(entry.getKey() + "//" + entry.getValue().toString());
+        }
+        SFSResultMap.clear();
     }
 
     public void closeApplication() {
