@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DatabaseForObjects {
-    private ArrayList<SingleObject> singleObjects;
+    public static ArrayList<SingleObject> singleObjects;
     private Map<String, Integer> classCounters;
     private List<String> classNameList;
     private List<Integer> featuresIDs;

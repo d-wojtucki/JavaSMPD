@@ -7,11 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 import static sample.Calculations.SFSResultMap;
 
@@ -22,8 +22,10 @@ public class Controller {
     @FXML
     public TextArea textArea2;
     private DatabaseForObjects base = new DatabaseForObjects();
+    private NNClassifier nnClassifier;
     private int featureCount = 0;
     private String clasifierMethod;
+    private int percentageValue = 80;
     @FXML
     private Node border;
     @FXML
@@ -34,6 +36,8 @@ public class Controller {
     private ComboBox<Integer> comboBox;
     @FXML
     private ComboBox<String> clasifiersComboBox;
+    @FXML
+    private TextField percentage;
 
     public void openFile() {
         FileChooser fileChooser = new FileChooser();
@@ -46,8 +50,10 @@ public class Controller {
             e.printStackTrace();
         }
         fillComboBox();
+        percentage.setText(String.valueOf(percentageValue));
         Clasifiers.fillClassifiersList();
         fillClasifiersComboBox();
+        nnClassifier = new NNClassifier(50);
     }
 
     public void selectSfs() {
@@ -70,12 +76,25 @@ public class Controller {
     //todo wypełnij napisanymi metodami
     public void clasify(){
         if(clasifierMethod == "NN"){
-
+            classifyNN();
         }else if(clasifierMethod == "k-NN"){
 
         }else if(clasifierMethod == "NM"){
 
         }
+    }
+
+    public void classifyNN() {
+        double result = nnClassifier.classifyTestObjects();
+        System.out.println(result);
+        printClassifierResults(result);
+    }
+
+    public void train() {
+        setClassifierPercentage();
+        Classifier.trainingObjects.clear();
+        Classifier.testObjects.clear();
+        printTrainingResults(Classifier.train(percentageValue));
     }
 
     public void computeSfs() {
@@ -103,12 +122,26 @@ public class Controller {
         clasifierMethod = clasifiersComboBox.getSelectionModel().getSelectedItem();
     }
 
+    public void setClassifierPercentage() {
+        percentageValue = Integer.parseInt(percentage.getCharacters().toString());
+    }
+
     public void setFeatureCount() {
         featureCount = comboBox.getSelectionModel().getSelectedItem();
     }
 
     public void printFisherResults(int featureCount) {
         textArea.setText(Calculations.FisherResult.getFisherResults(featureCount));
+    }
+
+    public void printClassifierResults(double result) {
+        textArea2.setText("Classifier selected: " + clasifierMethod +
+                "\nPercentage of samples in \ntraining set: " + percentageValue + "%"+
+                "\nResult: " + result);
+    }
+
+    public void printTrainingResults(String trainingResults) {
+        textArea2.setText(trainingResults);
     }
 
     public void printSFSResults(int featureCount) {

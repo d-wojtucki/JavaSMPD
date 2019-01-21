@@ -89,19 +89,18 @@
                         <padding>
                             <Insets top="20" left="30"/>
                         </padding>
-                        <Label text="Futures Selection"/>
+                        <Label text="Classifier Selection"/>
                         <ComboBox prefWidth="100" fx:id="clasifiersComboBox" onAction="#setClasifierMethod">
 
                         </ComboBox>
-                        <RadioButton text="Fisher"/>
-                        <RadioButton text="SFS"/>
                     </VBox>
                     <VBox spacing="20">
                         <padding>
                             <Insets top="20" left="30"/>
                         </padding>
-                        <Button text="Train" prefWidth="90"/>
-                        <TextField>
+                        <Button text="Train" prefWidth="90" onAction="#train"/>
+                        <Label text="Percentage"/>
+                        <TextField fx:id="percentage">
 
                         </TextField>
                     </VBox>
