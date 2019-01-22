@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import static sample.Calculations.SFSResultMap;
 
@@ -23,6 +24,7 @@ public class Controller {
     public TextArea textArea2;
     private DatabaseForObjects base = new DatabaseForObjects();
     private NNClassifier nnClassifier;
+    private NMClassifier nmClassifier;
     private KNNClassifier knnClassifier;
     private int featureCount = 0;
     private String clasifierMethod;
@@ -59,6 +61,7 @@ public class Controller {
         fillKComboBox();
         nnClassifier = new NNClassifier();
         knnClassifier = new KNNClassifier();
+        nmClassifier = new NMClassifier();
     }
 
     public void selectSfs() {
@@ -86,6 +89,7 @@ public class Controller {
         } else if (clasifierMethod == "k-NN") {
             classifyKNN(kfeatures);
         } else if (clasifierMethod == "NM") {
+            classifyNM();
 
         }
     }
@@ -102,6 +106,12 @@ public class Controller {
 
     public void classifyNN() {
         double result = nnClassifier.classifyTestObjects();
+        System.out.println(result);
+        printClassifierResults(result);
+    }
+
+    public void classifyNM() {
+        double result = nmClassifier.classifyTestObjects();
         System.out.println(result);
         printClassifierResults(result);
     }
@@ -163,9 +173,10 @@ public class Controller {
     }
 
     public void printClassifierResults(double result) {
+        DecimalFormat df = new DecimalFormat("#.##");
         textArea2.setText("Classifier selected: " + clasifierMethod +
                 "\nPercentage of samples in \ntraining set: " + percentageValue + "%" +
-                "\nResult: " + result);
+                "\nResult: " + df.format(result) + "% of samples \nclassified correctly.");
     }
 
     public void printTrainingResults(String trainingResults) {
