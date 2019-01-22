@@ -23,9 +23,11 @@ public class Controller {
     public TextArea textArea2;
     private DatabaseForObjects base = new DatabaseForObjects();
     private NNClassifier nnClassifier;
+    private KNNClassifier knnClassifier;
     private int featureCount = 0;
     private String clasifierMethod;
     private int percentageValue = 80;
+    private int kfeatures = 0;
     @FXML
     private Node border;
     @FXML
@@ -36,6 +38,8 @@ public class Controller {
     private ComboBox<Integer> comboBox;
     @FXML
     private ComboBox<String> clasifiersComboBox;
+    @FXML
+    private ComboBox<Integer> knumbersComboBox;
     @FXML
     private TextField percentage;
 
@@ -51,9 +55,10 @@ public class Controller {
         }
         fillComboBox();
         percentage.setText(String.valueOf(percentageValue));
-        Clasifiers.fillClassifiersList();
         fillClasifiersComboBox();
-        nnClassifier = new NNClassifier(50);
+        fillKComboBox();
+        nnClassifier = new NNClassifier();
+        knnClassifier = new KNNClassifier();
     }
 
     public void selectSfs() {
@@ -73,15 +78,26 @@ public class Controller {
             computeSfs();
         }
     }
-    //todo wypełnij napisanymi metodami
-    public void clasify(){
-        if(clasifierMethod == "NN"){
-            classifyNN();
-        }else if(clasifierMethod == "k-NN"){
 
-        }else if(clasifierMethod == "NM"){
+    //todo wypełnij napisanymi metodami
+    public void clasify() {
+        if (clasifierMethod == "NN") {
+            classifyNN();
+        } else if (clasifierMethod == "k-NN") {
+            classifyKNN(kfeatures);
+        } else if (clasifierMethod == "NM") {
 
         }
+    }
+
+    public void setKfeatures() {
+        kfeatures = knumbersComboBox.getSelectionModel().getSelectedItem();
+    }
+
+    public void classifyKNN(int k) {
+        double result = knnClassifier.classifyTestObjects(k);
+        System.out.println(result);
+        printClassifierResults(result);
     }
 
     public void classifyNN() {
@@ -112,10 +128,22 @@ public class Controller {
 
     public void fillComboBox() {
         comboBox.getItems().addAll(base.getFeautersIDs());
+        comboBox.getSelectionModel().selectFirst();
     }
 
     public void fillClasifiersComboBox() {
-        clasifiersComboBox.getItems().addAll(Clasifiers.getClasifiersList());
+        clasifiersComboBox.getItems().add("NN");
+        clasifiersComboBox.getItems().add("k-NN");
+        clasifiersComboBox.getItems().add("NM");
+        clasifiersComboBox.getItems().add("k-NN");
+        clasifiersComboBox.getSelectionModel().selectFirst();
+    }
+
+    public void fillKComboBox() {
+        for (int i = 1; i <= 10; i++)
+            knumbersComboBox.getItems().add(i);
+
+        knumbersComboBox.getSelectionModel().selectFirst();
     }
 
     public void setClasifierMethod() {
@@ -136,7 +164,7 @@ public class Controller {
 
     public void printClassifierResults(double result) {
         textArea2.setText("Classifier selected: " + clasifierMethod +
-                "\nPercentage of samples in \ntraining set: " + percentageValue + "%"+
+                "\nPercentage of samples in \ntraining set: " + percentageValue + "%" +
                 "\nResult: " + result);
     }
 
