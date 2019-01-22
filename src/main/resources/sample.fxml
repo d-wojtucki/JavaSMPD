@@ -5,13 +5,13 @@
     <Tab text="Preprocessing" closable="false">
         <BorderPane>
             <left>
-            <VBox spacing="20">
-                <padding>
-                    <Insets top="20" left="10"/>
-                </padding>
-                <Button text="Okay" prefWidth="90"/>
-                <Button text="Okay1" prefWidth="90"/>
-            </VBox>
+                <VBox spacing="20">
+                    <padding>
+                        <Insets top="20" left="10"/>
+                    </padding>
+                    <Button text="Okay" prefWidth="90"/>
+                    <Button text="Okay1" prefWidth="90"/>
+                </VBox>
             </left>
             <bottom>
                 <HBox spacing="10" alignment="bottom_right">
@@ -93,6 +93,9 @@
                         <ComboBox prefWidth="100" fx:id="clasifiersComboBox" onAction="#setClasifierMethod">
 
                         </ComboBox>
+                        <ComboBox prefWidth="100" fx:id="knumbersComboBox" onAction="#setKfeatures">
+
+                        </ComboBox>
                     </VBox>
                     <VBox spacing="20">
                         <padding>
@@ -127,7 +130,7 @@
                     <padding>
                         <Insets top="20" right="10"/>
                     </padding>
-                    <TextArea prefWidth="200" fx:id="textArea2" editable="false">
+                    <TextArea prefWidth="250" fx:id="textArea2" editable="false">
 
                     </TextArea>
                 </VBox>
