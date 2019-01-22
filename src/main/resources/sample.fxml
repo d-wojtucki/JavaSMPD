@@ -106,6 +106,10 @@
                         <TextField fx:id="percentage">
 
                         </TextField>
+                        <Label text="Bootstrap / Crossvalidation"/>
+                        <TextField fx:id="bootstrapInput"/>
+                        <Button text="Bootstrap" prefWidth="90" onAction="#doBootstrap"/>
+                        <Button text="Crossvalidate" prefWidth="90" onAction="#doCrossvalidation"/>
                     </VBox>
                     <VBox spacing="20">
                         <padding>

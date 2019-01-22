@@ -13,6 +13,8 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import static sample.Calculations.SFSResultMap;
 
@@ -30,6 +32,7 @@ public class Controller {
     private String clasifierMethod;
     private int percentageValue = 80;
     private int kfeatures = 0;
+    private int bootstrapValue = 3;
     @FXML
     private Node border;
     @FXML
@@ -44,6 +47,8 @@ public class Controller {
     private ComboBox<Integer> knumbersComboBox;
     @FXML
     private TextField percentage;
+    @FXML
+    private TextField bootstrapInput;
 
     public void openFile() {
         FileChooser fileChooser = new FileChooser();
@@ -57,6 +62,7 @@ public class Controller {
         }
         fillComboBox();
         percentage.setText(String.valueOf(percentageValue));
+        bootstrapInput.setText(String.valueOf(bootstrapValue));
         fillClasifiersComboBox();
         fillKComboBox();
         nnClassifier = new NNClassifier();
@@ -136,6 +142,47 @@ public class Controller {
         printFisherResults(featureCount);
     }
 
+    public void doBootstrap() {
+        setBootstrapInput();
+        Classifier.trainingObjects.clear();
+        Classifier.testObjects.clear();
+        if (clasifierMethod == "NN") {
+            bootstrapNN();
+        } else if (clasifierMethod == "k-NN") {
+
+        } else if (clasifierMethod == "NM") {
+
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public void bootstrapNN() {
+        double result = 0.0D;
+        ArrayList<Double> resultsList = new ArrayList();
+        for(int i=0; i<bootstrapValue; i++) {
+            //Collections.shuffle(Classifier.listOfAllObjects);
+            Classifier.bootstrapTrain(100);
+            double var = nnClassifier.classifyTestObjects();
+            result+=var;
+            resultsList.add(var);
+            Classifier.trainingObjects.clear();
+            Classifier.testObjects.clear();
+        }
+        result = result/bootstrapValue;
+        printBootstrapResults(result, resultsList);
+    }
+
+    public void doCrossvalidation() {
+        setBootstrapInput();
+        if (clasifierMethod == "NN") {
+
+        } else if (clasifierMethod == "k-NN") {
+
+        } else if (clasifierMethod == "NM") {
+
+        }
+    }
+
     public void fillComboBox() {
         comboBox.getItems().addAll(base.getFeautersIDs());
         comboBox.getSelectionModel().selectFirst();
@@ -164,6 +211,8 @@ public class Controller {
         percentageValue = Integer.parseInt(percentage.getCharacters().toString());
     }
 
+    public void setBootstrapInput() { bootstrapValue = Integer.parseInt(bootstrapInput.getCharacters().toString()); }
+
     public void setFeatureCount() {
         featureCount = comboBox.getSelectionModel().getSelectedItem();
     }
@@ -179,12 +228,28 @@ public class Controller {
                 "\nResult: " + df.format(result) + "% of samples \nclassified correctly.");
     }
 
+    public void printBootstrapResults(double result, ArrayList<Double> resultsList) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        textArea2.setText("Classifier selected: " + clasifierMethod +
+                "\nBootstrap method, k=" + bootstrapValue +
+                "\nPercentage of samples in \ntraining set: " + percentageValue + "%" +
+                "\nResult: " + df.format(result) + "% of samples \nclassified correctly."+
+                "\n\nResults table: " + getResultsTablePrintout(resultsList));
+    }
+
+    public String getResultsTablePrintout(ArrayList<Double> resultsList) {
+        String answerPrintout="[ ";
+        DecimalFormat df = new DecimalFormat("#.##");
+        for(Double result : resultsList) answerPrintout+=df.format(result) + " ";
+        answerPrintout+="]";
+        return answerPrintout;
+    }
+
     public void printTrainingResults(String trainingResults) {
         textArea2.setText(trainingResults);
     }
 
     public void printSFSResults(int featureCount) {
-        //textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
         for (Calculations.SFS a : SFSResultMap) {
             System.out.println(a.toString());
         }

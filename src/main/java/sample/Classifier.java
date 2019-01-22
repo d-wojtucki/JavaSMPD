@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static java.util.Collections.shuffle;
+
 public abstract class Classifier {
     static ArrayList<SingleObject> trainingObjects;
     static ArrayList<SingleObject> testObjects;
-    private static ArrayList<SingleObject> listOfAllObjects;
+    public static ArrayList<SingleObject> listOfAllObjects;
     int percentage;
 
     public Classifier() {
@@ -52,7 +54,7 @@ public abstract class Classifier {
     static String train(int percentage) {
         double objectQuantity = (double) listOfAllObjects.size();
         double countOfElementsToTrainingObjects = objectQuantity * ((double) percentage / 100.0D);
-        Collections.shuffle(listOfAllObjects);
+        shuffle(listOfAllObjects);
         for (SingleObject object : listOfAllObjects) {
             if ((double) trainingObjects.size() < countOfElementsToTrainingObjects) {
                 trainingObjects.add(object);
@@ -63,5 +65,13 @@ public abstract class Classifier {
 
         return ("TrainingObjects amount: " + trainingObjects.size() + ".\nTestObjects amount: " + testObjects.size());
 
+    }
+
+    static void bootstrapTrain(int quantity) {
+        shuffle(listOfAllObjects);
+        for(SingleObject object : listOfAllObjects) {
+            if(trainingObjects.size() < quantity) trainingObjects.add(object);
+            testObjects.add(object);
+        }
     }
 }
