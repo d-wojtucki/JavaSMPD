@@ -144,25 +144,29 @@ public class Controller {
 
     public void doBootstrap() {
         setBootstrapInput();
-        Classifier.trainingObjects.clear();
-        Classifier.testObjects.clear();
         if (clasifierMethod == "NN") {
-            bootstrapNN();
+            bootstrap("NN");
         } else if (clasifierMethod == "k-NN") {
-
+            bootstrap("KNN");
         } else if (clasifierMethod == "NM") {
-
+            bootstrap("NM");
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void bootstrapNN() {
+    private void bootstrap(String type) {
         double result = 0.0D;
         ArrayList<Double> resultsList = new ArrayList();
         for(int i=0; i<bootstrapValue; i++) {
             //Collections.shuffle(Classifier.listOfAllObjects);
             Classifier.bootstrapTrain(100);
-            double var = nnClassifier.classifyTestObjects();
+            double var = 0.0D;
+            if(type.equals("NN"))
+                var = nnClassifier.classifyTestObjects();
+            if(type.equals("NM"))
+                var = nmClassifier.classifyTestObjects();
+            if(type.equals("KNN"))
+                var = knnClassifier.classifyTestObjects(kfeatures);
             result+=var;
             resultsList.add(var);
             Classifier.trainingObjects.clear();

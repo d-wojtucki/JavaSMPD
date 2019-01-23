@@ -68,6 +68,8 @@ public abstract class Classifier {
     }
 
     static void bootstrapTrain(int quantity) {
+        trainingObjects.clear();
+        testObjects.clear();
         shuffle(listOfAllObjects);
         for(SingleObject object : listOfAllObjects) {
             if(trainingObjects.size() < quantity) trainingObjects.add(object);
