@@ -96,7 +96,6 @@ public class Controller {
             classifyKNN(kfeatures);
         } else if (clasifierMethod == "NM") {
             classifyNM();
-
         }
     }
 
@@ -153,24 +152,16 @@ public class Controller {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked","Duplicates"})
     private void bootstrap(String type) {
         double result = 0.0D;
         ArrayList<Double> resultsList = new ArrayList();
         for(int i=0; i<bootstrapValue; i++) {
             //Collections.shuffle(Classifier.listOfAllObjects);
             Classifier.bootstrapTrain(100);
-            double var = 0.0D;
-            if(type.equals("NN"))
-                var = nnClassifier.classifyTestObjects();
-            if(type.equals("NM"))
-                var = nmClassifier.classifyTestObjects();
-            if(type.equals("KNN"))
-                var = knnClassifier.classifyTestObjects(kfeatures);
+            double var = getSpecificClassifierExecuted(type);
             result+=var;
             resultsList.add(var);
-            Classifier.trainingObjects.clear();
-            Classifier.testObjects.clear();
         }
         result = result/bootstrapValue;
         printBootstrapResults(result, resultsList);
@@ -179,12 +170,38 @@ public class Controller {
     public void doCrossvalidation() {
         setBootstrapInput();
         if (clasifierMethod == "NN") {
-
+            crossvalidate("NN");
         } else if (clasifierMethod == "k-NN") {
-
+            crossvalidate("KNN");
         } else if (clasifierMethod == "NM") {
-
+            crossvalidate("NM");
         }
+    }
+
+    @SuppressWarnings({"unchecked","Duplicates"})
+    private void crossvalidate(String type) {
+        Collections.shuffle(Classifier.listOfAllObjects);
+        double result = 0.0D;
+        ArrayList<Double> resultsList = new ArrayList();
+        for(int i=0; i<bootstrapValue; i++) {
+            Classifier.crossvalidateTrain(i, bootstrapValue);
+            double var = getSpecificClassifierExecuted(type);
+            result+=var;
+            resultsList.add(var);
+        }
+        result = result/bootstrapValue;
+        printCrossvalidationResults(result, resultsList);
+    }
+
+    public double getSpecificClassifierExecuted(String type) {
+        double result = 0.0D;
+        if(type.equals("NN"))
+            result = nnClassifier.classifyTestObjects();
+        if(type.equals("NM"))
+            result = nmClassifier.classifyTestObjects();
+        if(type.equals("KNN"))
+            result = knnClassifier.classifyTestObjects(kfeatures);
+        return result;
     }
 
     public void fillComboBox() {
@@ -236,6 +253,15 @@ public class Controller {
         DecimalFormat df = new DecimalFormat("#.##");
         textArea2.setText("Classifier selected: " + clasifierMethod +
                 "\nBootstrap method, k=" + bootstrapValue +
+                "\nPercentage of samples in \ntraining set: " + percentageValue + "%" +
+                "\nResult: " + df.format(result) + "% of samples \nclassified correctly."+
+                "\n\nResults table: " + getResultsTablePrintout(resultsList));
+    }
+
+    public void printCrossvalidationResults(double result, ArrayList<Double> resultsList) {
+        DecimalFormat df = new DecimalFormat("#.##");
+        textArea2.setText("Classifier selected: " + clasifierMethod +
+                "\nCrossvalidation method, k=" + bootstrapValue +
                 "\nPercentage of samples in \ntraining set: " + percentageValue + "%" +
                 "\nResult: " + df.format(result) + "% of samples \nclassified correctly."+
                 "\n\nResults table: " + getResultsTablePrintout(resultsList));

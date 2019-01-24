@@ -76,4 +76,18 @@ public abstract class Classifier {
             testObjects.add(object);
         }
     }
+
+    static void crossvalidateTrain(int selectedSublist, int numberOfSublists) {
+        trainingObjects.clear();
+        testObjects.clear();
+        int numberOfObjectsInOneSublist = Math.floorDiv(listOfAllObjects.size(),numberOfSublists);
+        int currentObjectIterator=0;
+        for(SingleObject object : listOfAllObjects) {
+            if(currentObjectIterator >= selectedSublist*numberOfObjectsInOneSublist &&
+            currentObjectIterator < (selectedSublist*numberOfObjectsInOneSublist)+numberOfObjectsInOneSublist)
+                testObjects.add(object);
+            else trainingObjects.add(object);
+            currentObjectIterator++;
+        }
+    }
 }
