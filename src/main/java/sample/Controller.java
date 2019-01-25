@@ -125,7 +125,7 @@ public class Controller {
         setClassifierPercentage();
         Classifier.trainingObjects.clear();
         Classifier.testObjects.clear();
-        printTrainingResults(Classifier.train(percentageValue));
+        printTrainingResults(Classifier.setTrainingAndTestObject(percentageValue));
     }
 
     public void computeSfs() {

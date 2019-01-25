@@ -225,16 +225,8 @@ public class Calculations {
             return tab;
         }
 
-        public void setTab(int[] tab) {
-            this.tab = tab;
-        }
-
         public double getValue() {
             return value;
-        }
-
-        public void setValue(double value) {
-            this.value = value;
         }
 
         public static void resetFields() {
