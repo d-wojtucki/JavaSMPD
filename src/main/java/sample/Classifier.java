@@ -18,18 +18,18 @@ public abstract class Classifier {
     public static ArrayList<SingleObject> listOfAllObjects;
     public static List<SingleObject> acerObjects = new ArrayList<>();
     public static List<SingleObject> quercusObjects = new ArrayList<>();
-    public int[] bestFeatures = {};
+    public static int[] bestFeatures = {};
     int percentage;
 
     public Classifier() {
         listOfAllObjects = DatabaseForObjects.singleObjects;
     }
-    private void fillBestFeatures(){
-            bestFeatures = Calculations.SFS.tab;
+    public static void fillBestFeatures(int[] features){
+            bestFeatures = features;
     }
 
     double getDistanceBetweenTwoObjects(SingleObject object1, SingleObject object2) {
-        fillBestFeatures();
+        //fillBestFeatures();
         if(!Calculations.SFSResultMap.isEmpty()){
             bestFeatures = Calculations.SFSResultMap.get(0).getTab();
             Arrays.asList(bestFeatures).forEach(System.out::println);

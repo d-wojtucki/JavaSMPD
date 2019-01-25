@@ -133,6 +133,7 @@ public class Controller {
         //todo uwaga, nie resetuje wyników!!!
         //Calculations.resetAllFields();
         cal.calculateSFS22(featureCount);
+        Classifier.fillBestFeatures(Calculations.SFS.tab);
         printSFSResults(featureCount);
     }
 
@@ -140,6 +141,7 @@ public class Controller {
         setFeatureCount();
         System.out.println("Calculating for " + featureCount + " features, please wait...");
         Calculations.calculateFisher(featureCount);
+        Classifier.fillBestFeatures(Calculations.FisherResult.indexes);
         printFisherResults(featureCount);
     }
 
