@@ -18,7 +18,7 @@ public abstract class Classifier {
     public static ArrayList<SingleObject> listOfAllObjects;
     public static List<SingleObject> acerObjects = new ArrayList<>();
     public static List<SingleObject> quercusObjects = new ArrayList<>();
-    public static int[] bestFeatures = {};
+    public static int[] bestFeatures = {15, 31};
     int percentage;
 
     public Classifier() {

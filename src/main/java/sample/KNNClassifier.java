@@ -25,7 +25,7 @@ class KNNClassifier extends Classifier {
 
     private void classify(SingleObject object, ArrayList<SingleObject> acerObjects, ArrayList<SingleObject> quercusObjects, int k) {
         Map<SingleObject, Double> mapOfClosestObject = getMapOfClosetObject(object, k);
-        double closestDistance = 0.0D;
+        double closestDistance = getDistanceBetweenTwoObjects(object, trainingObjects.get(0));
         SingleObject closestObject = trainingObjects.get(0);
 
         for (SingleObject objectFromTrainingList : trainingObjects) {
