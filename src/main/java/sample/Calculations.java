@@ -10,7 +10,7 @@ import java.util.*;
 public class Calculations {
     public static ObjectClass acerObjectClass;
     public static ObjectClass quercusObjectClass;
-    public static Map<Integer, Double> resultsMap = new HashMap<>();
+    //public static Map<Integer, Double> resultsMap = new HashMap<>();
     public static List<SFS> SFSResultMap = new ArrayList<>();
     public double fisherTemp = 0;
     public List<SFS> result;
@@ -46,7 +46,7 @@ public class Calculations {
         while (iterator.hasNext()) {
             int[] next = iterator.next();
             tempFisher = calculateFisher(next, acer, quercus);
-            resultsMap.put(next[0], tempFisher);
+            //resultsMap.put(next[0], tempFisher);
             if (tempFisher > fisherValue) {
                 FisherResult.indexes = next;
                 FisherResult.value = tempFisher;
@@ -64,7 +64,8 @@ public class Calculations {
                 acer.getAverageMatrix().getMatrix(features, 0, 0));
         Matrix sB = getSMatrix(quercus.getFeatureMatrix().getMatrix(0, quercus.getFeatureMatrix().getRowDimension() - 1, features),
                 quercus.getAverageMatrix().getMatrix(features, 0, 0));
-        double fisher = minus / (sA.det() + sB.det());
+        //double fisher = minus / (sA.det() + sB.det());
+        double fisher = minus / (sA.plus(sB)).det();
         return fisher;
     }
 
@@ -79,7 +80,6 @@ public class Calculations {
     }
 
     private static Matrix getSMatrix(Matrix x, Matrix avg) {
-        // Matrix minus = getMinusElement(x, avg);
         double[][] doubles = replicateVectorToMatrix(avg.getRowPackedCopy(), x.getRowDimension());
         Matrix avgNew = new Matrix(doubles);
         Matrix minus1 = x.transpose().minus(avgNew);
