@@ -239,7 +239,7 @@ public class Calculations {
         }
 
         public static void resetFields() {
-            tab = null;
+            tab = new int[]{};
             value = 0;
         }
 

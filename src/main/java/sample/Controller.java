@@ -131,7 +131,7 @@ public class Controller {
     public void computeSfs() {
         Calculations cal = new Calculations();
         //todo uwaga, nie resetuje wyników!!!
-        //Calculations.resetAllFields();
+        Calculations.resetAllFields();
         cal.calculateSFS22(featureCount);
         Classifier.fillBestFeatures(Calculations.SFS.tab);
         printSFSResults(featureCount);
