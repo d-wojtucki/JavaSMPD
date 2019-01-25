@@ -2,6 +2,7 @@ package sample;
 
 import database.DatabaseForObjects;
 import database.SingleObject;
+import org.apache.commons.lang3.LocaleUtils;
 import org.apache.commons.math3.analysis.function.Sin;
 
 import java.util.ArrayList;
@@ -22,10 +23,13 @@ public abstract class Classifier {
 
     public Classifier() {
         listOfAllObjects = DatabaseForObjects.singleObjects;
-        //bestFeatures = Calculations.SFSResultMap;
+    }
+    private void fillBestFeatures(){
+            bestFeatures = Calculations.SFS.tab;
     }
 
     double getDistanceBetweenTwoObjects(SingleObject object1, SingleObject object2) {
+        fillBestFeatures();
         if(!Calculations.SFSResultMap.isEmpty()){
             bestFeatures = Calculations.SFSResultMap.get(0).getTab();
             Arrays.asList(bestFeatures).forEach(System.out::println);
@@ -33,9 +37,10 @@ public abstract class Classifier {
         double sumOfPoweredSubtractions = 0.0D;
         List<Double> object1Features = object1.getFeatures();
         List<Double> object2Features = object2.getFeatures();
-
-        for (Integer feature: bestFeatures) {
-            sumOfPoweredSubtractions += Math.pow(object2Features.get(feature) - object1Features.get(feature), 2.0D);
+        if(bestFeatures != null){
+            for (Integer feature: bestFeatures) {
+                sumOfPoweredSubtractions += Math.pow(object2Features.get(feature) - object1Features.get(feature), 2.0D);
+            }
         }
 
         return Math.sqrt(sumOfPoweredSubtractions);
@@ -72,9 +77,7 @@ public abstract class Classifier {
                 testObjects.add(object);
             }
         }
-
         return ("TrainingObjects amount: " + trainingObjects.size() + ".\nTestObjects amount: " + testObjects.size());
-
     }
 
     static String setTrainingAndTestObject(int percentage) {

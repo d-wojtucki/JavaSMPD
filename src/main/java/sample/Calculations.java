@@ -13,6 +13,7 @@ public class Calculations {
     public static Map<Integer, Double> resultsMap = new HashMap<>();
     public static List<SFS> SFSResultMap = new ArrayList<>();
     public double fisherTemp = 0;
+    public List<SFS> result;
 
     public static void instantiateObjectClasses(ArrayList<SingleObject> listOfAllObjects) {
         acerObjectClass = new ObjectClass("Acer");
@@ -99,6 +100,7 @@ public class Calculations {
     }
 
     public void calculateSFS22(int featuresCount) {
+
         calculateFisher(1);
         SFSResultMap.add(new SFS(FisherResult.indexes, FisherResult.value));
         for (int g = 2; g <= featuresCount; g++) {
@@ -139,6 +141,13 @@ public class Calculations {
                 }
             }
         }
+        setResult();
+    }
+    private void setResult(){
+        this.result = SFSResultMap;
+    }
+    public static List<SFS> getResult(){
+        return SFSResultMap;
     }
 
     public static void resetAllFields() {

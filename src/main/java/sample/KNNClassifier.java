@@ -7,11 +7,9 @@ import java.util.*;
 
 class KNNClassifier extends Classifier {
 
-
-    @SuppressWarnings("unchecked")
     KNNClassifier() {
-        trainingObjects = new ArrayList();
-        testObjects = new ArrayList();
+        //trainingObjects = new ArrayList();
+        //testObjects = new ArrayList();
     }
 
     @SuppressWarnings("unchecked")
@@ -52,7 +50,7 @@ class KNNClassifier extends Classifier {
     private Map<SingleObject, Double> getMapOfClosetObject(SingleObject object, int k) {
         Map<SingleObject, Double> mapOfClosetObject = new HashMap<>();
         for (int i = 0; i < k; i++) {
-            SingleObject closestObject = (SingleObject) trainingObjects.get(k);
+            SingleObject closestObject = trainingObjects.get(k);
             double distanceBetween = this.getDistanceBetweenTwoObjects(object, closestObject);
             mapOfClosetObject.put(closestObject, distanceBetween);
         }
