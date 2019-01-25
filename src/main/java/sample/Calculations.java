@@ -84,7 +84,7 @@ public class Calculations {
         Matrix avgNew = new Matrix(doubles);
         Matrix minus1 = x.transpose().minus(avgNew);
 
-        Matrix times = minus1.times(minus1.transpose());
+        Matrix times = (minus1.times(minus1.transpose())).times((double)1/x.getColumnDimension());
         return times;
     }
 

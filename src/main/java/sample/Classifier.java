@@ -121,7 +121,9 @@ public abstract class Classifier {
         testObjects.clear();
         shuffle(listOfAllObjects);
         for(SingleObject object : listOfAllObjects) {
-            if(trainingObjects.size() < quantity) trainingObjects.add(object);
+            if(trainingObjects.size() < quantity) {
+                trainingObjects.add(object);
+            }
             testObjects.add(object);
         }
     }
@@ -134,8 +136,8 @@ public abstract class Classifier {
         for(SingleObject object : listOfAllObjects) {
             if(currentObjectIterator >= selectedSublist*numberOfObjectsInOneSublist &&
             currentObjectIterator < (selectedSublist*numberOfObjectsInOneSublist)+numberOfObjectsInOneSublist)
-                testObjects.add(object);
-            else trainingObjects.add(object);
+                trainingObjects.add(object);
+            else testObjects.add(object);
             currentObjectIterator++;
         }
     }

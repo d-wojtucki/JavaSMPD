@@ -4,6 +4,8 @@ import database.SingleObject;
 import org.apache.commons.math3.analysis.function.Sin;
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class KNNClassifier extends Classifier {
 
@@ -25,26 +27,44 @@ class KNNClassifier extends Classifier {
 
     private void classify(SingleObject object, ArrayList<SingleObject> acerObjects, ArrayList<SingleObject> quercusObjects, int k) {
         Map<SingleObject, Double> mapOfClosestObject = getMapOfClosetObject(object, k);
-        double closestDistance = getDistanceBetweenTwoObjects(object, trainingObjects.get(0));
-        SingleObject closestObject = trainingObjects.get(0);
-
         for (SingleObject objectFromTrainingList : trainingObjects) {
             for (Map.Entry<SingleObject, Double> entry : mapOfClosestObject.entrySet()) {
 
-                if (this.getDistanceBetweenTwoObjects(entry.getKey(), objectFromTrainingList) < closestDistance) {
-                    closestDistance = entry.getValue();
-                    closestObject = entry.getKey();
+                if (getDistanceBetweenTwoObjects(object, entry.getKey()) > getDistanceBetweenTwoObjects(object,objectFromTrainingList)) {
+                    //closestDistance = entry.getValue();
+                    //
+                    //
+                    //closestObject = entry.getKey();
+
+                    mapOfClosestObject.remove(entry.getKey());
+                    mapOfClosestObject.put(objectFromTrainingList,getDistanceBetweenTwoObjects(object,objectFromTrainingList));
+
                 }
             }
+            sortMap(mapOfClosestObject);
         }
 
-        if (closestObject.getClassName().startsWith("Acer")) {
+        int acerCount=0;
+        int quercusCount=0;
+
+        for(Map.Entry<SingleObject, Double> entry : mapOfClosestObject.entrySet()) {
+            if(entry.getKey().getClassName().startsWith("Acer")) acerCount++;
+            else quercusCount++;
+        }
+
+        if (acerCount>quercusCount) {
             acerObjects.add(object);
-        }
-
-        if (closestObject.getClassName().startsWith("Quercus")) {
+        } else
             quercusObjects.add(object);
-        }
+    }
+
+    private Map<SingleObject, Double> sortMap(Map<SingleObject, Double> map) {
+        final Map<SingleObject, Double> sortedByCount = map.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        return sortedByCount;
     }
 
     private Map<SingleObject, Double> getMapOfClosetObject(SingleObject object, int k) {
