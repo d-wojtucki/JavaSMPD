@@ -2,8 +2,11 @@ package sample;
 
 import database.DatabaseForObjects;
 import database.SingleObject;
+import org.apache.commons.lang3.LocaleUtils;
+import org.apache.commons.math3.analysis.function.Sin;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,19 +16,31 @@ public abstract class Classifier {
     static ArrayList<SingleObject> trainingObjects;
     static ArrayList<SingleObject> testObjects;
     public static ArrayList<SingleObject> listOfAllObjects;
+    public static List<SingleObject> acerObjects = new ArrayList<>();
+    public static List<SingleObject> quercusObjects = new ArrayList<>();
+    public int[] bestFeatures = {};
     int percentage;
 
     public Classifier() {
         listOfAllObjects = DatabaseForObjects.singleObjects;
     }
+    private void fillBestFeatures(){
+            bestFeatures = Calculations.SFS.tab;
+    }
 
     double getDistanceBetweenTwoObjects(SingleObject object1, SingleObject object2) {
+        fillBestFeatures();
+        if(!Calculations.SFSResultMap.isEmpty()){
+            bestFeatures = Calculations.SFSResultMap.get(0).getTab();
+            Arrays.asList(bestFeatures).forEach(System.out::println);
+        }
         double sumOfPoweredSubtractions = 0.0D;
         List<Double> object1Features = object1.getFeatures();
         List<Double> object2Features = object2.getFeatures();
-
-        for (int i = 0; i < object1.getFeaturesNumber(); ++i) {
-            sumOfPoweredSubtractions += Math.pow(object2Features.get(i) - object1Features.get(i), 2.0D);
+        if(bestFeatures != null){
+            for (Integer feature: bestFeatures) {
+                sumOfPoweredSubtractions += Math.pow(object2Features.get(feature) - object1Features.get(feature), 2.0D);
+            }
         }
 
         return Math.sqrt(sumOfPoweredSubtractions);
@@ -62,9 +77,43 @@ public abstract class Classifier {
                 testObjects.add(object);
             }
         }
-
         return ("TrainingObjects amount: " + trainingObjects.size() + ".\nTestObjects amount: " + testObjects.size());
+    }
 
+    static String setTrainingAndTestObject(int percentage) {
+        splitClasses();
+        shuffle(acerObjects);
+        shuffle(quercusObjects);
+        trainingObjects.clear();
+        testObjects.clear();
+        int newAcerQuantity = percentage * acerObjects.size() / 100;
+        int newQuercusQuantity = percentage * quercusObjects.size() / 100;
+
+        for (int i = 0; i < newAcerQuantity; i++) {
+            trainingObjects.add(acerObjects.get(i));
+        }
+        for (int i = 0; i < newQuercusQuantity; i++) {
+            trainingObjects.add(quercusObjects.get(i));
+        }
+        for (int i = newAcerQuantity; i < acerObjects.size(); i++) {
+            testObjects.add(acerObjects.get(i));
+        }
+        for (int i = newQuercusQuantity; i < quercusObjects.size(); i++) {
+            testObjects.add(quercusObjects.get(i));
+        }
+        shuffle(trainingObjects);
+        return ("TrainingObjects amount: " + trainingObjects.size() + ".\nTestObjects amount: " + testObjects.size());
+    }
+    private static void splitClasses(){
+        acerObjects.clear();
+        quercusObjects.clear();
+        for(SingleObject object: listOfAllObjects){
+            if(object.getClassName().contains("Acer")){
+                acerObjects.add(object);
+            }else{
+                quercusObjects.add(object);
+            }
+        }
     }
 
     static void bootstrapTrain(int quantity) {

@@ -19,11 +19,6 @@ import java.util.Collections;
 import static sample.Calculations.SFSResultMap;
 
 public class Controller {
-
-    @FXML
-    public TextArea textArea;
-    @FXML
-    public TextArea textArea2;
     private DatabaseForObjects base = new DatabaseForObjects();
     private NNClassifier nnClassifier;
     private NMClassifier nmClassifier;
@@ -33,6 +28,11 @@ public class Controller {
     private int percentageValue = 80;
     private int kfeatures = 0;
     private int bootstrapValue = 3;
+
+    @FXML
+    public TextArea textArea;
+    @FXML
+    public TextArea textArea2;
     @FXML
     private Node border;
     @FXML
@@ -125,11 +125,13 @@ public class Controller {
         setClassifierPercentage();
         Classifier.trainingObjects.clear();
         Classifier.testObjects.clear();
-        printTrainingResults(Classifier.train(percentageValue));
+        printTrainingResults(Classifier.setTrainingAndTestObject(percentageValue));
     }
 
     public void computeSfs() {
         Calculations cal = new Calculations();
+        //todo uwaga, nie resetuje wyników!!!
+        //Calculations.resetAllFields();
         cal.calculateSFS22(featureCount);
         printSFSResults(featureCount);
     }
@@ -285,7 +287,6 @@ public class Controller {
         }
         textArea.setText(Calculations.SFSResult.getSfsResult(featureCount));
         SFSResultMap.clear();
-        Calculations.resetAllFields();
     }
 
     public void closeApplication() {

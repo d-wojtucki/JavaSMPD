@@ -8,11 +8,9 @@ class NNClassifier extends Classifier {
 
     @SuppressWarnings("unchecked")
     NNClassifier() {
-        trainingObjects = new ArrayList();
-        testObjects = new ArrayList();
-
+        //trainingObjects = new ArrayList();
+        //testObjects = new ArrayList();
         //TODO checking if training the classifier works
-
     }
 
     @SuppressWarnings("unchecked")
